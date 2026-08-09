@@ -52,7 +52,7 @@ makes the singleton client safe to reuse in long-lived queue workers.
 
 ## API coverage
 
-The package focuses on the Bot API objects consumed by Cryptonix notification
+The package focuses on the Bot API objects used by common Laravel notification
 flows. It includes typed DTOs for all current top-level `Update` variants and
 the message/service objects used by those flows. It is not yet a complete model
 of every Telegram Bot API 10.2 request and response object.
