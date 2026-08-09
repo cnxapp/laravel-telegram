@@ -1,29 +1,88 @@
-# Telegram library for Laravel
+# Laravel Telegram
+
+A typed Telegram Bot API client and DTO package for Laravel 10.
+
+The repository is maintained by the `cnxapp` organization. The Composer package
+and PHP namespace intentionally remain `vbespalov/laravel-telegram` and
+`Vbespalov\LaravelTelegram` for backward compatibility.
+
+## Requirements
+
+- PHP 8.1+
+- Laravel 10, 11 or 12
 
 ## Installation
-
-Library requires: 
-
-- PHP 8.1 or higher
-- Laravel 10.x or higher
-
-You can install library via composer:
 
 ```shell
 composer require vbespalov/laravel-telegram
 ```
 
-## Publishing config
-
-Optionally, you can publish the package’s config file:
+Publish the configuration when application-level overrides are needed:
 
 ```shell
-php artisan vendor:publish --provider="Vbespalov\LaravelTelegram\TelegramServiceProvider" --tag="telegram-config"
+php artisan vendor:publish \
+  --provider="Vbespalov\LaravelTelegram\TelegramServiceProvider" \
+  --tag="telegram-config"
 ```
 
-## Usage
+Configure at least one bot:
 
-Simple example of usage:
+```dotenv
+TELEGRAM_BOT_TOKEN=123456:replace-me
+```
+
 ```php
-Telegram::getMe()
+use Vbespalov\LaravelTelegram\Facades\Telegram;
+use Vbespalov\LaravelTelegram\MessageBuilder;
+
+$bot = Telegram::getMe();
+
+Telegram::sendMessage(
+    new MessageBuilder(chat_id: 123456789, text: 'Hello from Laravel'),
+);
 ```
+
+Multiple bot configurations can be selected for one request:
+
+```php
+Telegram::bot('cashier')->getMe();
+```
+
+The selection is reset after every request, including failed requests, which
+makes the singleton client safe to reuse in long-lived queue workers.
+
+## API coverage
+
+The package focuses on the Bot API objects consumed by Cryptonix notification
+flows. It includes typed DTOs for all current top-level `Update` variants and
+the message/service objects used by those flows. It is not yet a complete model
+of every Telegram Bot API 10.2 request and response object.
+
+Unknown fields in Telegram responses are ignored by `spatie/laravel-data`.
+New enum values and new tagged-union variants still require a package update.
+For broad API coverage, schema-driven DTO generation is the recommended next
+step.
+
+## Quality checks
+
+```shell
+composer install
+composer qa
+```
+
+The QA script runs Laravel Pint, Larastan and PHPUnit.
+
+The development toolchain runs against a currently supported Laravel release.
+Laravel 10 remains a runtime compatibility target for existing consumers, but
+applications should migrate because that framework branch is no longer a safe
+long-term baseline.
+
+## Versioning
+
+Repository transfers and organization ownership do not change the public
+Composer identity. Renaming the Composer package or PHP namespace is reserved
+for a separately planned major release.
+
+## License
+
+MIT

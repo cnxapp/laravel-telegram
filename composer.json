@@ -1,11 +1,12 @@
 {
     "name": "vbespalov/laravel-telegram",
-    "description": "Telegram library for laravel",
+    "description": "Typed Telegram Bot API client and DTOs for Laravel",
     "keywords": [
-        "vbespalov",
+        "cnxapp",
         "telegram",
         "laravel-telegram"
     ],
+    "homepage": "https://github.com/cnxapp/laravel-telegram",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -20,10 +21,22 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/support": "^10.0",
-        "illuminate/http": "^10.0",
+        "ext-json": "*",
+        "illuminate/http": "^10.0 || ^11.0 || ^12.0",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0",
         "spatie/laravel-package-tools": "^1.9.2",
         "spatie/laravel-data": "^4.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.13",
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vbespalov\\LaravelTelegram\\Tests\\": "tests/"
+        }
     },
     "extra": {
         "laravel": {
@@ -33,5 +46,23 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable" : true
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "analyse": "phpstan analyse --memory-limit=1G",
+        "format": "pint",
+        "format:check": "pint --test",
+        "test": "phpunit",
+        "qa": [
+            "@format:check",
+            "@analyse",
+            "@test"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/cnxapp/laravel-telegram/issues",
+        "source": "https://github.com/cnxapp/laravel-telegram"
+    }
 }

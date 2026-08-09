@@ -15,7 +15,5 @@ class MenuButton extends Data
         public MenuButtonType $type,
         public string|Optional $text = new Optional,
         public WebAppInfo|Optional $webApp = new Optional,
-    )
-    {
-    }
+    ) {}
 }

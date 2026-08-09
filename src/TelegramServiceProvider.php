@@ -15,15 +15,12 @@ class TelegramServiceProvider extends PackageServiceProvider
             ->hasConfigFile();
     }
 
-    public function registeringPackage(): void
-    {
-
-    }
+    public function registeringPackage(): void {}
 
     public function bootingPackage(): void
     {
-        $this->app->singleton(TelegramApiClient::class,function ($app) {
-            return new TelegramApiClient();
+        $this->app->singleton(TelegramApiClient::class, function ($app) {
+            return new TelegramApiClient;
         });
         $this->app->alias('Telegram', Telegram::class);
     }

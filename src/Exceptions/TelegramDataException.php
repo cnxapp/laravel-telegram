@@ -2,7 +2,4 @@
 
 namespace Vbespalov\LaravelTelegram\Exceptions;
 
-class TelegramDataException extends \Exception
-{
-
-}
+class TelegramDataException extends \Exception {}
