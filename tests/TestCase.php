@@ -7,7 +7,6 @@ namespace Cnx\LaravelTelegram\Tests;
 use Cnx\LaravelTelegram\TelegramServiceProvider;
 use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\LaravelData\LaravelDataServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
@@ -22,7 +21,6 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            LaravelDataServiceProvider::class,
             TelegramServiceProvider::class,
         ];
     }

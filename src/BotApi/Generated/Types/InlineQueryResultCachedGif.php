@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Cnx\LaravelTelegram\BotApi\Generated\Types;
+
+use Cnx\LaravelTelegram\BotApi\Type;
+
+/** @generated from Telegram Bot API 10.2 */
+final class InlineQueryResultCachedGif extends InlineQueryResult
+{
+    /** @var array<string, array{property: string, type: string, optional: bool}> */
+    protected const FIELDS = [
+        'type' => ['property' => 'type', 'type' => 'String', 'optional' => false],
+        'id' => ['property' => 'id', 'type' => 'String', 'optional' => false],
+        'gif_file_id' => ['property' => 'gifFileId', 'type' => 'String', 'optional' => false],
+        'title' => ['property' => 'title', 'type' => 'String', 'optional' => true],
+        'caption' => ['property' => 'caption', 'type' => 'String', 'optional' => true],
+        'parse_mode' => ['property' => 'parseMode', 'type' => 'String', 'optional' => true],
+        'caption_entities' => ['property' => 'captionEntities', 'type' => 'Array of MessageEntity', 'optional' => true],
+        'show_caption_above_media' => ['property' => 'showCaptionAboveMedia', 'type' => 'Boolean', 'optional' => true],
+        'reply_markup' => ['property' => 'replyMarkup', 'type' => 'InlineKeyboardMarkup', 'optional' => true],
+        'input_message_content' => ['property' => 'inputMessageContent', 'type' => 'InputMessageContent', 'optional' => true],
+    ];
+
+    /** @var array<string, scalar> */
+    protected const FIXED_FIELDS = [
+        'type' => 'gif',
+    ];
+
+    /**
+     * @param  list<MessageEntity>|null  $captionEntities
+     */
+    public function __construct(
+        public readonly string $type,
+        public readonly string $id,
+        public readonly string $gifFileId,
+        public readonly ?string $title = null,
+        public readonly ?string $caption = null,
+        public readonly ?string $parseMode = null,
+        public readonly ?array $captionEntities = null,
+        public readonly ?bool $showCaptionAboveMedia = null,
+        public readonly ?InlineKeyboardMarkup $replyMarkup = null,
+        public readonly InputTextMessageContent|InputRichMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|InputInvoiceMessageContent|null $inputMessageContent = null,
+    ) {}
+}

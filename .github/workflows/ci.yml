@@ -28,3 +28,17 @@ jobs:
       - uses: ramsey/composer-install@v3
 
       - run: composer qa
+
+  php-compatibility:
+    runs-on: ubuntu-latest
+    name: PHP 8.1 syntax
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+
+      - run: find src -name '*.php' -print0 | xargs -0 -n1 php -l

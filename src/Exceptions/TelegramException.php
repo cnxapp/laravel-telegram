@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cnx\LaravelTelegram\Exceptions;
 
-use Cnx\LaravelTelegram\DTO\ResponseParameters;
+use Cnx\LaravelTelegram\BotApi\Generated\Types\ResponseParameters;
 use RuntimeException;
 use Throwable;
 
