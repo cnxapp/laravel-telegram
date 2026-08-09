@@ -1,19 +1,19 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram;
+namespace Cnx\LaravelTelegram;
 
+use Cnx\LaravelTelegram\DTO\ForceReply;
+use Cnx\LaravelTelegram\DTO\InlineKeyboardMarkup;
+use Cnx\LaravelTelegram\DTO\LinkPreviewOptions;
+use Cnx\LaravelTelegram\DTO\Message;
+use Cnx\LaravelTelegram\DTO\MessageEntity;
+use Cnx\LaravelTelegram\DTO\ReplyKeyboardMarkup;
+use Cnx\LaravelTelegram\DTO\ReplyKeyboardRemove;
+use Cnx\LaravelTelegram\DTO\ReplyParameters;
+use Cnx\LaravelTelegram\Enums\ParseMode;
+use Cnx\LaravelTelegram\Facades\Telegram;
+use Cnx\LaravelTelegram\Traits\NotEmptyPropertiesToArray;
 use Illuminate\Contracts\Support\Arrayable;
-use Vbespalov\LaravelTelegram\DTO\ForceReply;
-use Vbespalov\LaravelTelegram\DTO\InlineKeyboardMarkup;
-use Vbespalov\LaravelTelegram\DTO\LinkPreviewOptions;
-use Vbespalov\LaravelTelegram\DTO\Message;
-use Vbespalov\LaravelTelegram\DTO\MessageEntity;
-use Vbespalov\LaravelTelegram\DTO\ReplyKeyboardMarkup;
-use Vbespalov\LaravelTelegram\DTO\ReplyKeyboardRemove;
-use Vbespalov\LaravelTelegram\DTO\ReplyParameters;
-use Vbespalov\LaravelTelegram\Enums\ParseMode;
-use Vbespalov\LaravelTelegram\Facades\Telegram;
-use Vbespalov\LaravelTelegram\Traits\NotEmptyPropertiesToArray;
 
 /** @implements Arrayable<string, mixed> */
 class MessageBuilder implements Arrayable

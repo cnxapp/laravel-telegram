@@ -1,10 +1,10 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\Exceptions;
+namespace Cnx\LaravelTelegram\Exceptions;
 
+use Cnx\LaravelTelegram\DTO\ResponseParameters;
 use RuntimeException;
 use Throwable;
-use Vbespalov\LaravelTelegram\DTO\ResponseParameters;
 
 class TelegramException extends RuntimeException
 {

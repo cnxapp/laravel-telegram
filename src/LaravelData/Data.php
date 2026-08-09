@@ -1,6 +1,6 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\LaravelData;
+namespace Cnx\LaravelTelegram\LaravelData;
 
 use Illuminate\Support\Str;
 use Spatie\LaravelData\Data as SpatieData;

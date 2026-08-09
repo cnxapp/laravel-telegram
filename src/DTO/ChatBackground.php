@@ -1,8 +1,8 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\DTO;
+namespace Cnx\LaravelTelegram\DTO;
 
-use Vbespalov\LaravelTelegram\LaravelData\Data;
+use Cnx\LaravelTelegram\LaravelData\Data;
 
 class ChatBackground extends Data
 {

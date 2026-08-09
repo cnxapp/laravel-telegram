@@ -1,5 +1,5 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\Exceptions;
+namespace Cnx\LaravelTelegram\Exceptions;
 
 class TelegramDataException extends \Exception {}

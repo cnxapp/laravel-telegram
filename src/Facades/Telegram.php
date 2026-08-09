@@ -1,9 +1,9 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\Facades;
+namespace Cnx\LaravelTelegram\Facades;
 
+use Cnx\LaravelTelegram\TelegramApiClient;
 use Illuminate\Support\Facades\Facade;
-use Vbespalov\LaravelTelegram\TelegramApiClient;
 
 /**
  * @mixin TelegramApiClient

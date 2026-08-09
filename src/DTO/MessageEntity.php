@@ -1,14 +1,14 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\DTO;
+namespace Cnx\LaravelTelegram\DTO;
 
+use Cnx\LaravelTelegram\Enums\MessageEntityType;
+use Cnx\LaravelTelegram\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\EnumCast;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Optional;
-use Vbespalov\LaravelTelegram\Enums\MessageEntityType;
-use Vbespalov\LaravelTelegram\LaravelData\Data;
 
 #[MapName(SnakeCaseMapper::class)]
 class MessageEntity extends Data

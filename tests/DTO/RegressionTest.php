@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Vbespalov\LaravelTelegram\Tests\DTO;
+namespace Cnx\LaravelTelegram\Tests\DTO;
 
-use Vbespalov\LaravelTelegram\DTO\ChatInviteLink;
-use Vbespalov\LaravelTelegram\DTO\InlineKeyboardButton;
-use Vbespalov\LaravelTelegram\DTO\InlineKeyboardMarkup;
-use Vbespalov\LaravelTelegram\DTO\ReactionType;
-use Vbespalov\LaravelTelegram\Enums\EmojiType;
-use Vbespalov\LaravelTelegram\Enums\ParseMode;
-use Vbespalov\LaravelTelegram\MessageBuilder;
-use Vbespalov\LaravelTelegram\Tests\TestCase;
+use Cnx\LaravelTelegram\DTO\ChatInviteLink;
+use Cnx\LaravelTelegram\DTO\InlineKeyboardButton;
+use Cnx\LaravelTelegram\DTO\InlineKeyboardMarkup;
+use Cnx\LaravelTelegram\DTO\ReactionType;
+use Cnx\LaravelTelegram\Enums\EmojiType;
+use Cnx\LaravelTelegram\Enums\ParseMode;
+use Cnx\LaravelTelegram\MessageBuilder;
+use Cnx\LaravelTelegram\Tests\TestCase;
 
 class RegressionTest extends TestCase
 {

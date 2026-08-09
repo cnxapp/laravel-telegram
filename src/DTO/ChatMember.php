@@ -1,15 +1,15 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\DTO;
+namespace Cnx\LaravelTelegram\DTO;
 
 use Carbon\Carbon;
+use Cnx\LaravelTelegram\Enums\ChatMemberStatus;
+use Cnx\LaravelTelegram\LaravelData\Casts\CarbonInterfaceCast;
+use Cnx\LaravelTelegram\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Optional;
-use Vbespalov\LaravelTelegram\Enums\ChatMemberStatus;
-use Vbespalov\LaravelTelegram\LaravelData\Casts\CarbonInterfaceCast;
-use Vbespalov\LaravelTelegram\LaravelData\Data;
 
 #[MapName(SnakeCaseMapper::class)]
 class ChatMember extends Data

@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Vbespalov\LaravelTelegram\Tests\DTO;
+namespace Cnx\LaravelTelegram\Tests\DTO;
 
 use Carbon\Carbon;
+use Cnx\LaravelTelegram\DTO\BotSubscriptionUpdated;
+use Cnx\LaravelTelegram\DTO\CallbackQuery;
+use Cnx\LaravelTelegram\DTO\ChatBoostRemoved;
+use Cnx\LaravelTelegram\DTO\ChatMember;
+use Cnx\LaravelTelegram\DTO\ForumTopicClosed;
+use Cnx\LaravelTelegram\DTO\GiveawayCreated;
+use Cnx\LaravelTelegram\DTO\ManagedBotUpdated;
+use Cnx\LaravelTelegram\DTO\Message;
+use Cnx\LaravelTelegram\DTO\PaidMediaInfo;
+use Cnx\LaravelTelegram\DTO\PaidMediaPurchased;
+use Cnx\LaravelTelegram\DTO\Update;
+use Cnx\LaravelTelegram\DTO\VideoChatStarted;
+use Cnx\LaravelTelegram\Tests\TestCase;
 use Spatie\LaravelData\Optional;
-use Vbespalov\LaravelTelegram\DTO\BotSubscriptionUpdated;
-use Vbespalov\LaravelTelegram\DTO\CallbackQuery;
-use Vbespalov\LaravelTelegram\DTO\ChatBoostRemoved;
-use Vbespalov\LaravelTelegram\DTO\ChatMember;
-use Vbespalov\LaravelTelegram\DTO\ForumTopicClosed;
-use Vbespalov\LaravelTelegram\DTO\GiveawayCreated;
-use Vbespalov\LaravelTelegram\DTO\ManagedBotUpdated;
-use Vbespalov\LaravelTelegram\DTO\Message;
-use Vbespalov\LaravelTelegram\DTO\PaidMediaPurchased;
-use Vbespalov\LaravelTelegram\DTO\Update;
-use Vbespalov\LaravelTelegram\DTO\VideoChatStarted;
-use Vbespalov\LaravelTelegram\Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
@@ -75,6 +76,7 @@ class UpdateTest extends TestCase
         self::assertInstanceOf(GiveawayCreated::class, $message->giveawayCreated);
         self::assertSame(100, $message->giveawayCreated->prizeStarCount);
         self::assertInstanceOf(VideoChatStarted::class, $message->videoChatStarted);
+        self::assertInstanceOf(PaidMediaInfo::class, $message->paidMedia);
         self::assertSame('preview', $message->paidMedia->paidMedia[0]->type);
     }
 

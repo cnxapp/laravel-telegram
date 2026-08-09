@@ -2,14 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Vbespalov\LaravelTelegram\Tests;
+namespace Cnx\LaravelTelegram\Tests;
 
+use Cnx\LaravelTelegram\TelegramServiceProvider;
+use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\LaravelData\LaravelDataServiceProvider;
-use Vbespalov\LaravelTelegram\TelegramServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
+    protected function application(): Application
+    {
+        self::assertInstanceOf(Application::class, $this->app);
+
+        return $this->app;
+    }
+
     /** @return array<int, class-string> */
     protected function getPackageProviders($app): array
     {

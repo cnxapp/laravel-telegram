@@ -1,10 +1,10 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram;
+namespace Cnx\LaravelTelegram;
 
+use Cnx\LaravelTelegram\Facades\Telegram;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Vbespalov\LaravelTelegram\Facades\Telegram;
 
 class TelegramServiceProvider extends PackageServiceProvider
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\Enums;
+namespace Cnx\LaravelTelegram\Enums;
 
 enum MenuButtonType: string
 {

@@ -2,9 +2,8 @@
 
 A typed Telegram Bot API client and DTO package for Laravel 10.
 
-The repository is maintained by the `cnxapp` organization. The Composer package
-and PHP namespace intentionally remain `vbespalov/laravel-telegram` and
-`Vbespalov\LaravelTelegram` for backward compatibility.
+The repository is maintained by the `cnxapp` organization and is published as
+`cnxapp/laravel-telegram` under the `Cnx\LaravelTelegram` PHP namespace.
 
 ## Requirements
 
@@ -14,14 +13,14 @@ and PHP namespace intentionally remain `vbespalov/laravel-telegram` and
 ## Installation
 
 ```shell
-composer require vbespalov/laravel-telegram
+composer require cnxapp/laravel-telegram
 ```
 
 Publish the configuration when application-level overrides are needed:
 
 ```shell
 php artisan vendor:publish \
-  --provider="Vbespalov\LaravelTelegram\TelegramServiceProvider" \
+  --provider="Cnx\LaravelTelegram\TelegramServiceProvider" \
   --tag="telegram-config"
 ```
 
@@ -32,8 +31,8 @@ TELEGRAM_BOT_TOKEN=123456:replace-me
 ```
 
 ```php
-use Vbespalov\LaravelTelegram\Facades\Telegram;
-use Vbespalov\LaravelTelegram\MessageBuilder;
+use Cnx\LaravelTelegram\Facades\Telegram;
+use Cnx\LaravelTelegram\MessageBuilder;
 
 $bot = Telegram::getMe();
 
@@ -79,9 +78,16 @@ long-term baseline.
 
 ## Versioning
 
-Repository transfers and organization ownership do not change the public
-Composer identity. Renaming the Composer package or PHP namespace is reserved
-for a separately planned major release.
+Version 2 changes the Composer identity from `vbespalov/laravel-telegram` to
+`cnxapp/laravel-telegram` and the PHP namespace from
+`Vbespalov\LaravelTelegram` to `Cnx\LaravelTelegram`.
+
+Upgrade from version 1 by replacing the package and updating imports:
+
+```shell
+composer remove vbespalov/laravel-telegram
+composer require cnxapp/laravel-telegram:^2.0
+```
 
 ## License
 

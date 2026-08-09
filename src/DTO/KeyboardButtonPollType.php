@@ -1,9 +1,9 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\DTO;
+namespace Cnx\LaravelTelegram\DTO;
 
+use Cnx\LaravelTelegram\LaravelData\Data;
 use Spatie\LaravelData\Optional;
-use Vbespalov\LaravelTelegram\LaravelData\Data;
 
 class KeyboardButtonPollType extends Data
 {

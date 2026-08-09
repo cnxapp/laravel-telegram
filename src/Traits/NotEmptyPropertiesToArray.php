@@ -1,6 +1,6 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\Traits;
+namespace Cnx\LaravelTelegram\Traits;
 
 use BackedEnum;
 use Illuminate\Contracts\Support\Arrayable;

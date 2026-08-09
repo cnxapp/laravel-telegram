@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vbespalov\LaravelTelegram\DTO;
+namespace Cnx\LaravelTelegram\DTO;
 
-use Vbespalov\LaravelTelegram\LaravelData\Data;
+use Cnx\LaravelTelegram\LaravelData\Data;
 
 class ManagedBotUpdated extends Data
 {

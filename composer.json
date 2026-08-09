@@ -1,5 +1,5 @@
 {
-    "name": "vbespalov/laravel-telegram",
+    "name": "cnxapp/laravel-telegram",
     "description": "Typed Telegram Bot API client and DTOs for Laravel",
     "keywords": [
         "cnxapp",
@@ -10,7 +10,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Vbespalov\\LaravelTelegram\\": "src/"
+            "Cnx\\LaravelTelegram\\": "src/"
         }
     },
     "authors": [
@@ -35,13 +35,13 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Vbespalov\\LaravelTelegram\\Tests\\": "tests/"
+            "Cnx\\LaravelTelegram\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Vbespalov\\LaravelTelegram\\TelegramServiceProvider"
+                "Cnx\\LaravelTelegram\\TelegramServiceProvider"
             ]
         }
     },

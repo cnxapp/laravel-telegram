@@ -1,11 +1,11 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\DTO;
+namespace Cnx\LaravelTelegram\DTO;
 
+use Cnx\LaravelTelegram\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Optional;
-use Vbespalov\LaravelTelegram\LaravelData\Data;
 
 #[MapName(SnakeCaseMapper::class)]
 class ExternalReplyInfo extends Data

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\LaravelData\Casts;
+namespace Cnx\LaravelTelegram\LaravelData\Casts;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -24,7 +24,7 @@ class CarbonInterfaceCast implements Cast
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): CarbonInterface|Uncastable
     {
         $type = $property->type->findAcceptedTypeForBaseType(\DateTimeInterface::class);
-        if ($type === null) {
+        if ($type === null || (! is_string($value) && ! is_int($value) && ! is_float($value) && ! $value instanceof \DateTimeInterface)) {
             return Uncastable::create();
         }
 

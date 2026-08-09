@@ -1,22 +1,22 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram;
+namespace Cnx\LaravelTelegram;
 
+use Cnx\LaravelTelegram\DTO\BotCommand;
+use Cnx\LaravelTelegram\DTO\BotCommandScope;
+use Cnx\LaravelTelegram\DTO\MenuButton;
+use Cnx\LaravelTelegram\DTO\Message;
+use Cnx\LaravelTelegram\DTO\MessageId;
+use Cnx\LaravelTelegram\DTO\ResponseParameters;
+use Cnx\LaravelTelegram\DTO\Update;
+use Cnx\LaravelTelegram\DTO\User;
+use Cnx\LaravelTelegram\DTO\WebhookInfo;
+use Cnx\LaravelTelegram\Exceptions\TelegramDataException;
+use Cnx\LaravelTelegram\Exceptions\TelegramException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use Vbespalov\LaravelTelegram\DTO\BotCommand;
-use Vbespalov\LaravelTelegram\DTO\BotCommandScope;
-use Vbespalov\LaravelTelegram\DTO\MenuButton;
-use Vbespalov\LaravelTelegram\DTO\Message;
-use Vbespalov\LaravelTelegram\DTO\MessageId;
-use Vbespalov\LaravelTelegram\DTO\ResponseParameters;
-use Vbespalov\LaravelTelegram\DTO\Update;
-use Vbespalov\LaravelTelegram\DTO\User;
-use Vbespalov\LaravelTelegram\DTO\WebhookInfo;
-use Vbespalov\LaravelTelegram\Exceptions\TelegramDataException;
-use Vbespalov\LaravelTelegram\Exceptions\TelegramException;
 
 class TelegramApiClient
 {
@@ -39,13 +39,53 @@ class TelegramApiClient
 
     public function __construct()
     {
-        $this->apiUrl = (string) config('telegram.api_url', 'https://api.telegram.org');
-        $this->botConfigs = (array) config('telegram.bot_configs', []);
-        $this->defaultBotConfigName = (string) config('telegram.default_bot_config', 'default');
+        $this->apiUrl = $this->stringConfig('telegram.api_url', 'https://api.telegram.org');
+        $this->botConfigs = $this->botConfigs();
+        $this->defaultBotConfigName = $this->stringConfig('telegram.default_bot_config', 'default');
         $this->currentBotConfigName = $this->defaultBotConfigName;
-        if (! empty($this->botConfigs[$this->defaultBotConfigName])) {
+        if (isset($this->botConfigs[$this->defaultBotConfigName])) {
             $this->defaultBotConfig = $this->botConfigs[$this->defaultBotConfigName];
         }
+    }
+
+    private function stringConfig(string $key, string $default): string
+    {
+        $value = config($key, $default);
+
+        return is_string($value) && $value !== '' ? $value : $default;
+    }
+
+    private function integerConfig(string $key, int $default): int
+    {
+        $value = config($key, $default);
+
+        return is_int($value) && $value >= 0 ? $value : $default;
+    }
+
+    /** @return array<string, array<string, mixed>> */
+    private function botConfigs(): array
+    {
+        $configuredBots = config('telegram.bot_configs', []);
+        if (! is_array($configuredBots)) {
+            return [];
+        }
+
+        $botConfigs = [];
+        foreach ($configuredBots as $name => $config) {
+            if (! is_string($name) || ! is_array($config)) {
+                continue;
+            }
+
+            $botConfig = [];
+            foreach ($config as $key => $value) {
+                if (is_string($key)) {
+                    $botConfig[$key] = $value;
+                }
+            }
+            $botConfigs[$name] = $botConfig;
+        }
+
+        return $botConfigs;
     }
 
     /**
@@ -93,7 +133,7 @@ class TelegramApiClient
     }
 
     /**
-     * @param  array<string, mixed>|Arrayable<array-key, mixed>|null  $params
+     * @param  array<string, mixed>|Arrayable<string, mixed>|null  $params
      * @return array<string, mixed>
      *
      * @throws TelegramException
@@ -112,17 +152,25 @@ class TelegramApiClient
         }
         $url = $this->apiUrl.'/bot'.$botToken.$endpoint;
 
-        $params = (is_a($params, Arrayable::class) ? $params->toArray() : $params) ?? [];
+        $rawParams = ($params instanceof Arrayable ? $params->toArray() : $params) ?? [];
+        $requestParams = [];
+        foreach ($rawParams as $key => $value) {
+            if (! is_string($key)) {
+                throw new TelegramException('Telegram API request parameters must use string keys.');
+            }
+
+            $requestParams[$key] = $value;
+        }
 
         try {
             /** @var Response $response */
             $response = Http::acceptJson()
-                ->connectTimeout((int) config('telegram.connect_timeout', 5))
-                ->timeout((int) config('telegram.timeout', 30))
-                ->$method($url, $params);
+                ->connectTimeout($this->integerConfig('telegram.connect_timeout', 5))
+                ->timeout($this->integerConfig('telegram.timeout', 30))
+                ->$method($url, $requestParams);
 
             $responseData = $response->json();
-            if (! is_array($responseData)) {
+            if (! $this->isStringKeyedArray($responseData)) {
                 throw new TelegramException(
                     "Telegram API returned a non-JSON response. Status: {$response->status()} {$response->reason()}"
                 );
@@ -149,6 +197,22 @@ class TelegramApiClient
             $this->currentBotConfig = null;
             $this->currentBotConfigName = $this->defaultBotConfigName;
         }
+    }
+
+    /** @phpstan-assert-if-true array<string, mixed> $value */
+    private function isStringKeyedArray(mixed $value): bool
+    {
+        if (! is_array($value)) {
+            return false;
+        }
+
+        foreach (array_keys($value) as $key) {
+            if (! is_string($key)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -324,10 +388,16 @@ class TelegramApiClient
 
         $result = $this->sendRequest('forwardMessages', 'post', $request);
         if (! empty($result['result']) && is_array($result['result'])) {
-            return array_map(
-                static fn (array $messageId): MessageId => MessageId::from($messageId),
-                $result['result'],
-            );
+            $messageIds = [];
+            foreach ($result['result'] as $messageId) {
+                if (! is_array($messageId)) {
+                    throw new TelegramDataException('Not expected response from Telegram API.');
+                }
+
+                $messageIds[] = MessageId::from($messageId);
+            }
+
+            return $messageIds;
         }
 
         return null;

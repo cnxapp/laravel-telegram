@@ -1,11 +1,11 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\DTO;
+namespace Cnx\LaravelTelegram\DTO;
 
+use Cnx\LaravelTelegram\Enums\FacePartType;
+use Cnx\LaravelTelegram\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
-use Vbespalov\LaravelTelegram\Enums\FacePartType;
-use Vbespalov\LaravelTelegram\LaravelData\Data;
 
 #[MapName(SnakeCaseMapper::class)]
 class MaskPosition extends Data

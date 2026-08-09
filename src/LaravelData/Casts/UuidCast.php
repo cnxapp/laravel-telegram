@@ -1,6 +1,6 @@
 <?php
 
-namespace Vbespalov\LaravelTelegram\LaravelData\Casts;
+namespace Cnx\LaravelTelegram\LaravelData\Casts;
 
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
