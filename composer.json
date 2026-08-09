@@ -57,7 +57,7 @@
         "format:check": "@php vendor/bin/pint --test",
         "generate:bot-api": [
             "@php tools/generate-bot-api.php",
-            "@php vendor/bin/pint --quiet src/BotApi/Generated"
+            "@php vendor/bin/pint --quiet src/BotApi/Generated src/Facades/BotApi.php"
         ],
         "test": "@php vendor/bin/phpunit",
         "qa": [

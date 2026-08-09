@@ -573,6 +573,67 @@ function renderMethodsTrait(array $methods, array $types): string
         ."trait Methods\n{\n".rtrim($body)."\n}\n";
 }
 
+/**
+ * @param  array<string, array{anchor: string, description: string, return_type: string, parameters: list<array{parameter: string, type: string, required: bool, description: string}>}>  $methods
+ * @param  array<string, array{kind: string, variants: list<string>}>  $types
+ */
+function renderFacade(array $methods, array $types): string
+{
+    $unions = [];
+    foreach ($types as $name => $definition) {
+        if ($definition['kind'] === 'union') {
+            $unions[$name] = $definition['variants'];
+        }
+    }
+
+    $annotations = [
+        ' * @method static \\Cnx\\LaravelTelegram\\BotApiClient bot(?string $botConfigName = null)',
+        ' * @method static mixed execute(\\Cnx\\LaravelTelegram\\BotApi\\Request $request)',
+        " * @method static mixed call(string \$method, array<string, mixed> \$parameters = [], string \$returnType = 'Mixed')",
+    ];
+
+    foreach ($methods as $method => $definition) {
+        $request = '\\Cnx\\LaravelTelegram\\BotApi\\Generated\\Requests\\'.ucfirst($method).'Request';
+        $return = phpDocType($definition['return_type'], true, $unions);
+        $required = array_filter(
+            $definition['parameters'],
+            static fn (array $parameter): bool => $parameter['required'],
+        );
+
+        if ($definition['parameters'] === []) {
+            $parameters = '';
+        } elseif ($required === []) {
+            $parameters = "?{$request} \$request = null";
+        } else {
+            $parameters = "{$request} \$request";
+        }
+
+        $annotations[] = " * @method static {$return} {$method}({$parameters})";
+    }
+
+    $doc = implode("\n", $annotations);
+
+    return "<?php\n\ndeclare(strict_types=1);\n\nnamespace Cnx\\LaravelTelegram\\Facades;\n\n"
+        ."use Cnx\\LaravelTelegram\\BotApiClient;\n"
+        ."use Illuminate\\Support\\Facades\\Facade;\n\n"
+        ."/**\n"
+        .' * Telegram Bot API '.BOT_API_VERSION." facade.\n"
+        ." *\n"
+        ."{$doc}\n"
+        ." *\n"
+        ." * @mixin BotApiClient\n"
+        ." *\n"
+        .' * @generated from Telegram Bot API '.BOT_API_VERSION."\n"
+        ." */\n"
+        ."final class BotApi extends Facade\n"
+        ."{\n"
+        ."    protected static function getFacadeAccessor(): string\n"
+        ."    {\n"
+        ."        return BotApiClient::class;\n"
+        ."    }\n"
+        ."}\n";
+}
+
 /** @param array<string, string> $files */
 function writeGeneratedFiles(string $directory, array $files): void
 {
@@ -792,6 +853,9 @@ if (! array_key_exists('manifest-only', $options)) {
     writeGeneratedFiles($generated.'/Requests', renderRequests($methods, $types));
     if (file_put_contents($generated.'/Methods.php', renderMethodsTrait($methods, $types)) === false) {
         fail('Unable to write generated methods trait.');
+    }
+    if (file_put_contents(dirname(__DIR__).'/src/Facades/BotApi.php', renderFacade($methods, $types)) === false) {
+        fail('Unable to write generated BotApi facade metadata.');
     }
 }
 

@@ -72,6 +72,47 @@ $message = BotApi::sendMessage(new SendMessageRequest(
 echo $message->messageId;
 ```
 
+### PhpStorm autocomplete
+
+For the most reliable IDE navigation and autocomplete, inject `BotApiClient`.
+Its 185 generated methods have native parameter and return types, so PhpStorm
+also knows the exact response DTO after every call:
+
+```php
+use Cnx\LaravelTelegram\BotApi\Generated\Requests\SendMessageRequest;
+use Cnx\LaravelTelegram\BotApiClient;
+
+final class SendTelegramNotification
+{
+    public function __construct(private readonly BotApiClient $telegram) {}
+
+    public function __invoke(int $chatId, string $text): void
+    {
+        $message = $this->telegram->sendMessage(new SendMessageRequest(
+            chatId: $chatId,
+            text: $text,
+        ));
+
+        echo $message->messageId;
+    }
+}
+```
+
+Laravel resolves `BotApiClient` from the container automatically. The
+`BotApi` facade is also fully supported: its PHPDoc metadata is generated from
+the same pinned Bot API manifest and exposes all method, request and response
+types to PhpStorm.
+
+After installing or updating the package, refresh Composer's autoloader:
+
+```shell
+composer dump-autoload
+```
+
+PhpStorm normally detects Composer packages automatically. If an already open
+project still shows stale symbols, use **File → Reload All from Disk**; cache
+invalidation should only be needed as a last resort.
+
 Generated request classes live in
 `Cnx\LaravelTelegram\BotApi\Generated\Requests`; response and input types live
 in `Cnx\LaravelTelegram\BotApi\Generated\Types`. Tagged Telegram unions are

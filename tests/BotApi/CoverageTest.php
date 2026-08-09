@@ -8,7 +8,9 @@ use Cnx\LaravelTelegram\BotApi\InputFile;
 use Cnx\LaravelTelegram\BotApi\Request;
 use Cnx\LaravelTelegram\BotApi\Type;
 use Cnx\LaravelTelegram\BotApiClient;
+use Cnx\LaravelTelegram\Facades\BotApi;
 use Cnx\LaravelTelegram\Tests\TestCase;
+use ReflectionClass;
 
 class CoverageTest extends TestCase
 {
@@ -20,6 +22,9 @@ class CoverageTest extends TestCase
         self::assertSame('7b567f7e567218918d899c5217e0fdfcb1f437c495e2cbece568c59592a3c791', $manifest['schema_sha256']);
         self::assertCount(388, $manifest['types']);
         self::assertCount(185, $manifest['methods']);
+
+        $facadeDoc = (new ReflectionClass(BotApi::class))->getDocComment();
+        self::assertIsString($facadeDoc);
 
         foreach ($manifest['types'] as $name => $definition) {
             if ($name === 'InputFile') {
@@ -79,6 +84,11 @@ class CoverageTest extends TestCase
             self::assertTrue(class_exists($request), "Missing request for Telegram method {$method}.");
             self::assertTrue(is_subclass_of($request, Request::class));
             self::assertTrue(method_exists(BotApiClient::class, $method), "Missing client method {$method}.");
+            self::assertMatchesRegularExpression(
+                '/@method static [^\r\n]+ '.preg_quote($method, '/').'\(/',
+                $facadeDoc,
+                "Missing facade autocomplete metadata for Telegram method {$method}.",
+            );
 
             /** @var class-string<Request> $request */
             self::assertSame($method, $request::method());
@@ -94,6 +104,12 @@ class CoverageTest extends TestCase
             }
             self::assertSame($parameters, $request::fieldDefinitions(), "Parameter coverage differs for {$method}.");
         }
+
+        self::assertSame(188, substr_count($facadeDoc, '@method static '));
+        self::assertStringContainsString(
+            '@method static \\Cnx\\LaravelTelegram\\BotApi\\Generated\\Types\\Message sendMessage(\\Cnx\\LaravelTelegram\\BotApi\\Generated\\Requests\\SendMessageRequest $request)',
+            $facadeDoc,
+        );
     }
 
     /**

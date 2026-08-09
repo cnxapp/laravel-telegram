@@ -21,7 +21,8 @@ composer qa
 - The complete generated Bot API layer is pinned to the authoritative manifest
   in `resources/telegram-bot-api-10.2.json`; change it only through
   `tools/generate-bot-api.php`.
-- Never edit files under `src/BotApi/Generated` manually.
+- Never edit files under `src/BotApi/Generated` or the generated metadata in
+  `src/Facades/BotApi.php` manually.
 - Add a deserialization test based on a representative Telegram JSON payload
   whenever a DTO is introduced or changed.
 - Never commit Telegram tokens, webhook secrets, or real chat identifiers.
