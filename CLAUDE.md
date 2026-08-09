@@ -17,7 +17,9 @@ composer qa
 
 - The Composer package is `cnxapp/laravel-telegram` and the PHP namespace is
   `Cnx\LaravelTelegram`.
-- Response DTOs map Telegram's snake_case payloads through `SnakeCaseMapper`.
+- `BotApiClient` is the primary API; `BotApi` is the only supported facade.
+- Generated DTOs expose camelCase readonly properties and serialize to
+  Telegram's snake_case field names.
 - The complete generated Bot API layer is pinned to the authoritative manifest
   in `resources/telegram-bot-api-10.2.json`; change it only through
   `tools/generate-bot-api.php`.

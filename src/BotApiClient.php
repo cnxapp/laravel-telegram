@@ -7,12 +7,13 @@ namespace Cnx\LaravelTelegram;
 use Cnx\LaravelTelegram\BotApi\Generated\Methods;
 use Cnx\LaravelTelegram\BotApi\Hydrator;
 use Cnx\LaravelTelegram\BotApi\Request;
+use Cnx\LaravelTelegram\BotApi\Transport;
 
 final class BotApiClient
 {
     use Methods;
 
-    public function __construct(private readonly TelegramApiClient $transport) {}
+    public function __construct(private readonly Transport $transport) {}
 
     /** @return $this */
     public function bot(?string $botConfigName = null): self

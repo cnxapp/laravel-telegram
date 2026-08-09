@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cnx\LaravelTelegram;
 
-use Cnx\LaravelTelegram\Facades\Telegram;
+use Cnx\LaravelTelegram\BotApi\Transport;
 use Illuminate\Contracts\Foundation\Application;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -16,16 +18,11 @@ class TelegramServiceProvider extends PackageServiceProvider
             ->hasConfigFile();
     }
 
-    public function registeringPackage(): void {}
-
-    public function bootingPackage(): void
+    public function registeringPackage(): void
     {
-        $this->app->singleton(TelegramApiClient::class, function () {
-            return new TelegramApiClient;
-        });
+        $this->app->singleton(Transport::class);
         $this->app->singleton(BotApiClient::class, function (Application $app) {
-            return new BotApiClient($app->make(TelegramApiClient::class));
+            return new BotApiClient($app->make(Transport::class));
         });
-        $this->app->alias('Telegram', Telegram::class);
     }
 }
