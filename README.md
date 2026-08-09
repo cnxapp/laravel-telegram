@@ -1,6 +1,6 @@
 # Laravel Telegram
 
-A typed Telegram Bot API 10.2 client for Laravel 10, 11 and 12. The package
+A typed Telegram Bot API 10.2 client for Laravel 10, 11, 12 and 13. The package
 contains request objects, response/input DTOs and typed methods for the complete
 Telegram Bot API contract.
 
@@ -10,7 +10,10 @@ The package is maintained by the `cnxapp` organization and is published as
 ## Requirements
 
 - PHP 8.1+
-- Laravel 10, 11 or 12
+- Laravel 10, 11, 12 or 13
+
+Laravel 13 requires PHP 8.3 or newer; older supported Laravel versions retain
+the package's PHP 8.1 minimum.
 
 ## Installation
 

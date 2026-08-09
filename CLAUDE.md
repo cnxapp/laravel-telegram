@@ -17,6 +17,8 @@ composer qa
 
 - The Composer package is `cnxapp/laravel-telegram` and the PHP namespace is
   `Cnx\LaravelTelegram`.
+- Runtime compatibility covers Laravel 10, 11, 12 and 13; CI tests Laravel 12
+  and 13 explicitly while preserving PHP 8.1 syntax compatibility.
 - `BotApiClient` is the primary API; `BotApi` is the only supported facade.
 - Generated DTOs expose camelCase readonly properties and serialize to
   Telegram's snake_case field names.
