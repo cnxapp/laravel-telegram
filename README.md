@@ -1,6 +1,6 @@
 # Laravel Telegram
 
-A typed Telegram Bot API client and DTO package for Laravel 10.
+A typed Telegram Bot API 10.2 client and DTO package for Laravel 10, 11 and 12.
 
 The repository is maintained by the `cnxapp` organization and is published as
 `cnxapp/laravel-telegram` under the `Cnx\LaravelTelegram` PHP namespace.
@@ -52,15 +52,60 @@ makes the singleton client safe to reuse in long-lived queue workers.
 
 ## API coverage
 
-The package focuses on the Bot API objects used by common Laravel notification
-flows. It includes typed DTOs for all current top-level `Update` variants and
-the message/service objects used by those flows. It is not yet a complete model
-of every Telegram Bot API 10.2 request and response object.
+The generated client covers the complete
+[Telegram Bot API 10.2 contract](https://core.telegram.org/bots/api): 185
+methods and 388 types, including the rich-message and guest-bot additions.
+Every method has a request DTO, typed parameters and a typed response.
 
-Unknown fields in Telegram responses are ignored by `spatie/laravel-data`.
-New enum values and new tagged-union variants still require a package update.
-For broad API coverage, schema-driven DTO generation is the recommended next
-step.
+Use the generated API through `BotApi`:
+
+```php
+use Cnx\LaravelTelegram\BotApi\Generated\Requests\SendMessageRequest;
+use Cnx\LaravelTelegram\Facades\BotApi;
+
+$message = BotApi::sendMessage(new SendMessageRequest(
+    chatId: 123456789,
+    text: 'Hello from the typed Bot API client',
+    disableNotification: true,
+));
+
+echo $message->messageId;
+```
+
+Generated request classes live in
+`Cnx\LaravelTelegram\BotApi\Generated\Requests`; response and input types live
+in `Cnx\LaravelTelegram\BotApi\Generated\Types`. Tagged Telegram unions are
+hydrated to their concrete variant.
+
+Uploads work for direct and nested `attach://` fields:
+
+```php
+use Cnx\LaravelTelegram\BotApi\Generated\Requests\SendPhotoRequest;
+use Cnx\LaravelTelegram\BotApi\InputFile;
+use Cnx\LaravelTelegram\Facades\BotApi;
+
+$message = BotApi::sendPhoto(new SendPhotoRequest(
+    chatId: 123456789,
+    photo: InputFile::fromPath(storage_path('app/photo.jpg')),
+));
+```
+
+The original `Telegram` facade and its curated DTOs remain available for
+backward compatibility. `BotApi::call()` is also available as a raw escape
+hatch when Telegram publishes an API version newer than the generated
+contract.
+
+The pinned source manifest is
+`resources/telegram-bot-api-10.2.json`. Generated files are reproducible from
+the official documentation:
+
+```shell
+composer generate:bot-api
+```
+
+The generator refuses a source whose latest advertised Bot API version is not
+10.2, preventing a newer contract from being silently published under the old
+version number. Generated files should not be edited manually.
 
 ## Quality checks
 
@@ -70,6 +115,8 @@ composer qa
 ```
 
 The QA script runs Laravel Pint, Larastan and PHPUnit.
+Larastan is configured at its maximum level. The contract test verifies every
+type, field, union, method, parameter and return mapping in the pinned manifest.
 
 The development toolchain runs against a currently supported Laravel release.
 Laravel 10 remains a runtime compatibility target for existing consumers, but

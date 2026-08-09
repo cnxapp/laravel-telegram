@@ -2,6 +2,7 @@
 
 namespace Cnx\LaravelTelegram;
 
+use Cnx\LaravelTelegram\BotApi\MultipartPayload;
 use Cnx\LaravelTelegram\DTO\BotCommand;
 use Cnx\LaravelTelegram\DTO\BotCommandScope;
 use Cnx\LaravelTelegram\DTO\MenuButton;
@@ -163,11 +164,17 @@ class TelegramApiClient
         }
 
         try {
-            /** @var Response $response */
-            $response = Http::acceptJson()
+            $payload = MultipartPayload::from($requestParams);
+            $pendingRequest = Http::acceptJson()
                 ->connectTimeout($this->integerConfig('telegram.connect_timeout', 5))
-                ->timeout($this->integerConfig('telegram.timeout', 30))
-                ->$method($url, $requestParams);
+                ->timeout($this->integerConfig('telegram.timeout', 30));
+            foreach ($payload->attachments as $name => $file) {
+                $headers = $file->mimeType === null ? [] : ['Content-Type' => $file->mimeType];
+                $pendingRequest = $pendingRequest->attach($name, $file->contents(), $file->filename, $headers);
+            }
+
+            /** @var Response $response */
+            $response = $pendingRequest->$method($url, $payload->parameters);
 
             $responseData = $response->json();
             if (! $this->isStringKeyedArray($responseData)) {

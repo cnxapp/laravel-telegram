@@ -28,6 +28,7 @@
         "spatie/laravel-data": "^4.0"
     },
     "require-dev": {
+        "ext-dom": "*",
         "larastan/larastan": "^3.0",
         "laravel/pint": "^1.13",
         "orchestra/testbench": "^10.0",
@@ -51,10 +52,14 @@
         "sort-packages": true
     },
     "scripts": {
-        "analyse": "phpstan analyse --memory-limit=1G",
-        "format": "pint",
-        "format:check": "pint --test",
-        "test": "phpunit",
+        "analyse": "@php vendor/bin/phpstan analyse --memory-limit=1G",
+        "format": "@php vendor/bin/pint",
+        "format:check": "@php vendor/bin/pint --test",
+        "generate:bot-api": [
+            "@php tools/generate-bot-api.php",
+            "@php vendor/bin/pint --quiet src/BotApi/Generated"
+        ],
+        "test": "@php vendor/bin/phpunit",
         "qa": [
             "@format:check",
             "@analyse",
